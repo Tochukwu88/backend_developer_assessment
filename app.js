@@ -14,11 +14,11 @@ require('dotenv').config()
 
 
 app.use(express.json());
-app.get("/",(req,res)=>{
-   return successRes(res,"","welcome to my blog api",)
+app.get("/", (req, res) => {
+    return successRes(res, "", "welcome to my blog api",)
 })
-app.use('/api/blog',BlogRoutes)
-app.use('/api/comment',commentRoutes)
+app.use('/api/blog', BlogRoutes)
+app.use('/api/comment', commentRoutes)
 
 app.use('*', (req, res) => {
     return errorResponse(res, "route not found", 404)

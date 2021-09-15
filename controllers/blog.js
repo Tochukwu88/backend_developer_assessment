@@ -1,71 +1,81 @@
-const {Blog,Comment} = require('../models/index')
+const { Blog, Comment } = require('../models/index')
 const { successRes, errorResponse } = require('../utils/responseHandler')
 
-class BlogController{
-    static async createBlog(req,res){
-      try{
-        const {title,content} = req.body
-      const newBlog =   await Blog.create({title,content})
-         return successRes(res,newBlog,"blog created",201)
-      }catch(error){
-          return errorResponse(res,error,500)
-      }
+class BlogController {
+    static async createBlog(req, res) {
+        try {
+            const { title, content } = req.body
+            const newBlog = await Blog.create({ title, content })
+            return successRes(res, newBlog, "blog created", 201)
+        } catch (error) {
+            return errorResponse(res, error, 500)
+        }
 
     }
-    static async getAllBlogs(req,res){
+    static async getAllBlogs(req, res) {
         //pagination
-        const {skip} = req.query
-        let limit =  5
-        let offset = skip? skip * limit : 0
-        try{
-            const allBlogs = await Blog.findAll({offset, limit})
-            if(allBlogs.length < 1){
-                return errorResponse(res," there are no blog",404)
+        const { skip } = req.query
+        let limit = 5
+        let offset = skip ? skip * limit : 0
+        try {
+            const allBlogs = await Blog.findAll({ offset, limit })
+            if (allBlogs.length < 1) {
+                return errorResponse(res, " there are no blog", 404)
             }
-            return successRes(res,allBlogs,"",200)
-        }catch(error){
-            return errorResponse(res,error,500)
+            return successRes(res, allBlogs, "", 200)
+        } catch (error) {
+            return errorResponse(res, error, 500)
         }
     }
-    static async getSingleBlog(req,res){
-        try{
+    static async getSingleBlog(req, res) {
+        try {
             //gets a single post/blog as well as all the comments associated with the post/blog
-            const singleBlog = await Blog.findOne({where:{id:req.params.id},include:Comment})
-            if(!singleBlog){
-                return errorResponse(res," blog not found",404)
+            const singleBlog = await Blog.findOne({ where: { id: req.params.id }, include: Comment })
+            if (!singleBlog) {
+                return errorResponse(res, " blog not found", 404)
             }
-            return successRes(res,singleBlog,"",200)
-        }catch(error){
+            return successRes(res, singleBlog, "", 200)
+        } catch (error) {
             console.log(error)
-            return errorResponse(res,error,500)
+            return errorResponse(res, error, 500)
         }
     }
-    
-    static async updateBlog(req,res){
-        try{
+
+    static async updateBlog(req, res) {
+        try {
             const id = req.params.id
-            const {title,content} = req.body
-            const payload ={
+            const { title, content } = req.body
+            const payload = {
                 title,
                 content
             }
-            const singleBlog = await Blog.findOne({where:{id}})
-            if(!singleBlog){
-                return errorResponse(res," blog not found",404)
+            const singleBlog = await Blog.findOne({ where: { id } })
+            if (!singleBlog) {
+                return errorResponse(res, " blog not found", 404)
             }
-           const updatedBlog =   await singleBlog.update(payload)
-           return successRes(res,updatedBlog,"",200)
-        }catch(error){
-            return errorResponse(res,error,500)
+            const updatedBlog = await singleBlog.update(payload)
+            return successRes(res, updatedBlog, "", 200)
+        } catch (error) {
+            return errorResponse(res, error, 500)
         }
     }
-    static async deleteBlog(req,res){
-        try{
-         await Blog.destroy({where:{id:req.params.id}})
-         return successRes(res,"","deleted successfully",200)
-        }catch(error){
+    static async deleteBlog(req, res) {
+        try {
+            const singleBlog = await Blog.findOne({ where: { id: req.params.id }, include: Comment })
+            if (!singleBlog) {
+                return errorResponse(res, " blog not found", 404)
+            }
+            //get all comments
+            const c = await singleBlog.Comments
+            //map through all the comments for a particular post and delete them
+            c.map(comment => {
+                Comment.destroy({ where: { id: comment.id } })
+            })
+            await Blog.destroy({ where: { id: req.params.id } })
+            return successRes(res, "", "deleted successfully", 200)
+        } catch (error) {
             console.log(error)
-            return errorResponse(res,'error please contact support',500)
+            return errorResponse(res, 'error please contact support', 500)
         }
     }
 }

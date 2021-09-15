@@ -9,21 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Blog}) {
+    static associate({ Blog }) {
       // define association here
-      this.belongsTo(Blog,{
-        foreignKey:'blogId',  
+      this.belongsTo(Blog, {
+        foreignKey: 'blogId',
 
-     
-    })
+
+      })
     }
   };
   Comment.init({
     comment: DataTypes.STRING,
-    blogId:{
+    blogId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-     
+
     }
   }, {
     sequelize,
