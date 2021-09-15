@@ -25,8 +25,7 @@ app.use('*', (req, res) => {
 })
 
 
-const port = process.env.PORT || 3001
-app.listen(port, async () => {
+app.listen(process.env.PORT || 5000, async () => {
     try {
         console.log('server started')
         await sequelize.authenticate();
