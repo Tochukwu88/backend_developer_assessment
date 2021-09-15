@@ -1,11 +1,12 @@
 const express = require('express')
 const BlogController = require('../controllers/blog')
+const { blogValidationRules,validate } = require('../validation')
 
 
 
 const router = express.Router()
 
-router.post('/create', BlogController.createBlog)
+router.post('/create', blogValidationRules(),validate ,BlogController.createBlog)
 router.put('/update/:id',BlogController.updateBlog)
 router.delete('/delete/:id',BlogController.deleteBlog)
 
