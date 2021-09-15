@@ -39,4 +39,5 @@
 ## link to hosted url : https://backend-developer-assessment.herokuapp.com/
 # issues with deployment
 i could not add a database to this app on heroku because heroku required my bank card to add cleardb to this app
+
 response from heroku: "Please verify your account to install this add-on plan (please enter a credit card) For more information, see https://devcenter.heroku.com/categories/billing Verify now at https://heroku.com/verify"
