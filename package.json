@@ -4,14 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test":"jest",
+    "test": "jest",
     "dev": "nodemon app.js"
   },
   "keywords": [],
   "engines": {
     "node": "14.x",
     "npm": "6.x"
- },
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
