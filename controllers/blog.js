@@ -13,8 +13,12 @@ class BlogController{
 
     }
     static async getAllBlogs(req,res){
+        //pagination
+        const {skip} = req.query
+        let limit =  5
+        let offset = skip? skip * limit : 0
         try{
-            const allBlogs = await Blog.findAll({ limit: 5 })
+            const allBlogs = await Blog.findAll({offset, limit})
             if(allBlogs.length < 1){
                 return errorResponse(res," there are no blog",404)
             }

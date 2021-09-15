@@ -13,8 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(Blog,{
         foreignKey:'blogId',  
-        onDelete:'cascade',
-        hooks:true
+
      
     })
     }
@@ -24,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     blogId:{
       type: DataTypes.INTEGER,
       allowNull: false,
-      onDelete:'cascade'
+     
     }
   }, {
     sequelize,

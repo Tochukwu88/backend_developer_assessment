@@ -15,7 +15,7 @@ module.exports = {
       blogId:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        onDelete:"cascade"
+        
       },
       createdAt: {
         allowNull: false,
